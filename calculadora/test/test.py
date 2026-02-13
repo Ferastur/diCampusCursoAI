@@ -1,10 +1,14 @@
-# Importamos las funciones del archivo anterior
-# Nota: Asegúrate de que tu archivo de calculadora se llame 'app.py' en la ruta "../src/app.py"
-from ../src/app import (
+import sys
+import os
+
+# Añadimos la carpeta 'src' al camino de búsqueda de Python
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+
+# Ahora ya puedes importar el archivo app.py (que está dentro de src)
+from app import (
     sumar, restar, multiplicar, dividir, 
     dividir_entera, calcular_modulo, potenciar
 )
-
 def ejecutar_tests():
     print("🧪 Iniciando batería de pruebas...")
 
