@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Masterclass | Presentación Pro</title>
+    
+    <!-- Librerías Externas -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2f81f7;
+            --success: #238636;
+            --bg: #0d1117;
+            --card-bg: rgba(22, 27, 34, 0.8);
+            --text: #e6edf3;
+            --text-dim: #8b949e;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass: blur(12px);
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%;
+            background: radial-gradient(circle at center, #161b22 0%, #0d1117 100%);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Barra de Progreso Superior */
+        .progress-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background: rgba(255,255,255,0.05);
+            z-index: 1000;
+        }
+        #progress-bar {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--primary), #a371f7);
+            box-shadow: 0 0 15px var(--primary);
+            transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Escenario de Presentación */
+        .presentation-stage {
+            width: 90vw;
+            height: 80vh;
+            max-width: 1100px;
+            max-height: 650px;
+            background: var(--card-bg);
+            backdrop-filter: var(--glass);
+            -webkit-backdrop-filter: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            position: relative;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 50px;
+            box-sizing: border-box;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            align-items: center;
+            animation: slideReveal 0.6s ease-out;
+        }
+
+        .slide.active { display: grid; }
+
+        @keyframes slideReveal {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Contenido de Texto */
+        .slide-info h4 { color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
+        .slide-info h1 { font-size: 3rem; margin: 10px 0 20px 0; line-height: 1.1; font-weight: 700; }
+        .slide-info p { font-size: 1.15rem; color: var(--text-dim); line-height: 1.6; }
+        .slide-info ul { padding-left: 20px; color: var(--text-dim); }
+        .slide-info li { margin-bottom: 10px; }
+
+        /* Contenido Visual */
+        .slide-visual {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .mermaid { background: white !important; width: 100%; padding: 15px; border-radius: 12px; }
+
+        /* Iconos grandes */
+        .big-icon { font-size: 8rem; color: var(--primary); filter: drop-shadow(0 0 20px rgba(47, 129, 247, 0.4)); }
+        .success-icon { color: var(--success); filter: drop-shadow(0 0 20px rgba(35, 134, 54, 0.4)); }
+
+        /* Controles */
+        .controls {
+            position: fixed;
+            bottom: 40px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 10px;
+        }
+        .nav-btn:hover:not(:disabled) { color: var(--primary); transform: scale(1.2); }
+        .nav-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+
+        #slide-index { font-weight: 600; min-width: 60px; text-align: center; font-variant-numeric: tabular-nums; }
+
+        /* Estilos específicos para mockups de código */
+        .code-mock {
+            font-family: 'Courier New', Courier, monospace;
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+        .code-blue { color: #58a6ff; }
+        .code-green { color: #7ee787; }
+
+        @media (max-width: 900px) {
+            .slide { grid-template-columns: 1fr; text-align: center; }
+            .slide-visual { display: none; }
+            .slide-info h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container"><div id="progress-bar"></div></div>
+
+    <div class="presentation-stage">
+        
+        <!-- SLIDE 1: INTRO -->
+        <div class="slide active">
+            <div class="slide-info">
+                <h4>Introducción</h4>
+                <h1>Domina GitHub como un Pro</h1>
+                <p>La herramienta esencial que separa a los aficionados de los ingenieros de software profesionales. Aprende a controlar el tiempo de tu código.</p>
+            </div>
+            <div class="slide-visual">
+                <i class="fab fa-github big-icon"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: CONCEPTOS -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Conceptos</h4>
+                <h1>Git vs GitHub</h1>
+                <p>Mucha gente los confunde, pero son piezas distintas de un mismo rompecabezas:</p>
+                <ul>
+                    <li><strong>Git:</strong> Software local. Es el cronómetro que guarda versiones en tu disco duro.</li>
+                    <li><strong>GitHub:</strong> Plataforma web. El lugar donde subes esas versiones para colaborar.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <div class="mermaid">
+                    graph TD
+                    A[Tu Ordenador] -- Instalas Git --> B(Control Local)
+                    B -- Subes a GitHub --> C{Colaboración Global}
+                    style C fill:#2f81f7,color:#fff
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: INSTALACIÓN -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Primeros Pasos</h4>
+                <h1>Instalar GitHub Desktop</h1>
+                <p>La forma más inteligente de empezar sin memorizar comandos complejos de consola.</p>
+                <ul>
+                    <li>Descarga en <strong>desktop.github.com</strong></li>
+                    <li>Inicia sesión con tu cuenta.</li>
+                    <li>Configura tu nombre y correo (aparecerá en cada cambio que hagas).</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-file-download big-icon"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: EL REPOSITORIO -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Estructura</h4>
+                <h1>¿Qué es un Repositorio?</h1>
+                <p>Es la "carpeta inteligente" de tu proyecto. No solo guarda archivos, guarda su <strong>historia</strong>.</p>
+                <ul>
+                    <li><strong>README.md:</strong> El manual de instrucciones.</li>
+                    <li><strong>.gitignore:</strong> Filtro de archivos que no deben subirse.</li>
+                    <li><strong>License:</strong> Quién y cómo pueden usar tu código.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-box-archive big-icon"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: FLUJO DE TRABAJO -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>El Ciclo Diario</h4>
+                <h1>Add, Commit & Push</h1>
+                <p>Este es el mantra que repetirás cada vez que escribas código:</p>
+                <ol>
+                    <li><strong>Modify:</strong> Cambias archivos.</li>
+                    <li><strong>Commit:</strong> Guardas una "foto" con un mensaje descriptivo.</li>
+                    <li><strong>Push:</strong> Envías tus fotos a la nube de GitHub.</li>
+                </ol>
+            </div>
+            <div class="slide-visual">
+                <div class="mermaid">
+                    sequenceDiagram
+                    participant PC as Mi Ordenador
+                    participant GH as GitHub Cloud
+                    PC->>PC: Commit (Snapshot)
+                    PC->>GH: Push (Subir)
+                    GH->>PC: Pull (Bajar cambios)
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: RAMAS -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Avanzado</h4>
+                <h1>Ramas (Branches)</h1>
+                <p>¿Quieres probar una idea loca sin romper lo que ya funciona? Usa una rama.</p>
+                <ul>
+                    <li><strong>Main:</strong> La rama principal (código estable).</li>
+                    <li><strong>Feature branch:</strong> Tu laboratorio de experimentos.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <div class="mermaid">
+                    gitGraph
+                    commit
+                    branch feature-idea
+                    checkout feature-idea
+                    commit
+                    commit
+                    checkout main
+                    merge feature-idea
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: PULL REQUESTS -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Colaboración</h4>
+                <h1>Pull Requests</h1>
+                <p>Es el corazón de la colaboración. Pides permiso para unir tu rama a la principal.</p>
+                <ul>
+                    <li>Tu equipo revisa el código.</li>
+                    <li>Se discuten mejoras.</li>
+                    <li>Se acepta (Merge) y el código se une oficialmente.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <div class="badge-pro" style="background: var(--success); padding: 20px; border-radius: 15px; font-weight: bold;">
+                    REVIEW & MERGE
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: CONFLICTOS -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Retos</h4>
+                <h1>Conflictos de Merge</h1>
+                <p>Ocurre cuando dos personas editan la misma línea al mismo tiempo. Git no sabe cuál elegir.</p>
+                <p>GitHub Desktop te mostrará ambas versiones para que tú decidas con un clic cuál es la correcta.</p>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-unite big-icon" style="color: #f85149;"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: BUENAS PRÁCTICAS -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Consejos</h4>
+                <h1>Hacerlo como un Pro</h1>
+                <ul>
+                    <li>Commits pequeños y frecuentes (no esperes al final del día).</li>
+                    <li>Mensajes claros: "Añado login" es mejor que "Cambios".</li>
+                    <li>Haz <strong>Pull</strong> siempre antes de empezar para tener lo último.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <div class="code-mock">
+                    <span class="code-blue">git</span> commit -m <span class="code-green">"Fix: corregido error en login"</span><br>
+                    <span class="code-blue">git</span> push origin main
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: CONCLUSIÓN -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>¡Listo!</h4>
+                <h1>Empieza hoy mismo</h1>
+                <p>GitHub es tu portfolio. Todo el código que subas hoy es una prueba de tu talento para el futuro.</p>
+                <p><strong>Tarea:</strong> Crea tu primer repo "Hola Mundo" y súbelo ahora.</p>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-award success-icon" style="font-size: 10rem;"></i>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+        <span id="slide-index">1 / 10</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progress-bar');
+        const slideIndexLabel = document.getElementById('slide-index');
+        const totalSlides = slides.length;
+
+        // Configuración de Mermaid
+        mermaid.initialize({ 
+            startOnLoad: false, 
+            theme: 'neutral',
+            gitGraph: { mainBranchName: 'main' },
+            securityLevel: 'loose'
+        });
+
+        function updateUI() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+
+            // Actualizar botones
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            
+            // Actualizar barra de progreso
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
+
+            // Actualizar etiqueta
+            slideIndexLabel.innerText = `${currentSlide + 1} / ${totalSlides}`;
+
+            // Re-renderizar Mermaid al mostrar la diapositiva
+            // Esto evita que los diagramas no se dibujen por estar en un div oculto
+            setTimeout(() => {
+                mermaid.init(undefined, document.querySelectorAll(".slide.active .mermaid"));
+            }, 100);
+        }
+
+        function changeSlide(step) {
+            currentSlide += step;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            if (currentSlide < 0) currentSlide = 0;
+            updateUI();
+        }
+
+        // Navegación por teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Enter' || e.key === ' ') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        // Inicialización manual
+        updateUI();
+    </script>
+</body>
+</html>
