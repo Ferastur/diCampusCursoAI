@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Masterclass Parte 2 | Repositorios Públicos</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #bc8cff; /* Cambio de color para diferenciar Parte 2 */
+            --success: #238636;
+            --bg: #0d1117;
+            --card-bg: rgba(22, 27, 34, 0.8);
+            --text: #e6edf3;
+            --text-dim: #8b949e;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass: blur(12px);
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            background: radial-gradient(circle at center, #1c1622 0%, #0d1117 100%);
+            color: var(--text); font-family: 'Poppins', sans-serif;
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+        }
+
+        .progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 6px; background: rgba(255,255,255,0.05); z-index: 1000; }
+        #progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), #2f81f7); box-shadow: 0 0 15px var(--primary); transition: width 0.4s ease; }
+
+        .presentation-stage {
+            width: 90vw; height: 80vh; max-width: 1100px; max-height: 650px;
+            background: var(--card-bg); backdrop-filter: var(--glass);
+            border: 1px solid var(--border); border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); position: relative; display: flex; overflow: hidden;
+        }
+
+        .slide { display: none; width: 100%; height: 100%; padding: 50px; box-sizing: border-box; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; animation: slideReveal 0.6s ease-out; }
+        .slide.active { display: grid; }
+
+        @keyframes slideReveal { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .slide-info h4 { color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
+        .slide-info h1 { font-size: 2.8rem; margin: 10px 0 20px 0; line-height: 1.1; font-weight: 700; }
+        .slide-info p { font-size: 1.1rem; color: var(--text-dim); line-height: 1.6; }
+        
+        .slide-visual { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 20px; height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden; }
+        .mermaid { background: white !important; width: 100%; padding: 15px; border-radius: 12px; }
+
+        .controls { position: fixed; bottom: 40px; display: flex; gap: 20px; align-items: center; background: rgba(255,255,255,0.05); padding: 10px 25px; border-radius: 50px; border: 1px solid var(--border); }
+        .nav-btn { background: transparent; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; padding: 10px; }
+        .nav-btn:hover:not(:disabled) { color: var(--primary); transform: scale(1.2); }
+        .nav-btn:disabled { opacity: 0.2; }
+
+        .step-badge { background: var(--primary); color: #000; padding: 5px 12px; border-radius: 6px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
+        .warning-box { background: rgba(248, 81, 73, 0.1); border: 1px solid #f85149; padding: 15px; border-radius: 10px; color: #f85149; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container"><div id="progress-bar"></div></div>
+
+    <div class="presentation-stage">
+        
+        <!-- SLIDE 11: INTRO PARTE 2 -->
+        <div class="slide active">
+            <div class="slide-info">
+                <h4>Parte 2</h4>
+                <h1>Tu Código al Mundo</h1>
+                <p>Ya sabes usar Git. Ahora aprenderás a publicar tus proyectos, gestionar la visibilidad y convertir tus carpetas en escaparates para reclutadores y colaboradores.</p>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-globe-americas" style="font-size: 8rem; color: var(--primary);"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: PÚBLICO VS PRIVADO -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Visibilidad</h4>
+                <h1>Público vs Privado</h1>
+                <p>Elegir bien define quién puede ver y clonar tu trabajo:</p>
+                <ul>
+                    <li><strong>Público:</strong> Visible para todos. Ideal para portfolios y código abierto (Open Source).</li>
+                    <li><strong>Privado:</strong> Solo tú y tus colaboradores invitados pueden verlo. Ideal para proyectos comerciales o tareas escolares.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <div class="mermaid">
+                    graph TD
+                    A[Tu Repositorio] --> B{¿Visibilidad?}
+                    B -- Público --> C[Cualquiera en Internet]
+                    B -- Privado --> D[Solo tú e Invitados]
+                    style C fill:#238636,color:#fff
+                    style D fill:#f85149,color:#fff
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: CREAR REPO WEB (Paso 1) -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>En la Web</h4>
+                <h1>Crear Repo en GitHub.com</h1>
+                <p>El proceso es sencillo pero tiene opciones clave:</p>
+                <ol>
+                    <li>Click en el icono <strong>+</strong> (arriba a la derecha) -> <strong>New repository</strong>.</li>
+                    <li>Dale un nombre único y descriptivo.</li>
+                    <li>Selecciona la opción <strong>"Public"</strong>.</li>
+                </ol>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-plus-square" style="font-size: 8rem; opacity: 0.8;"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: CREAR REPO WEB (Paso 2) -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>En la Web</h4>
+                <h1>Inicialización Crítica</h1>
+                <p>Al crear un repo público, GitHub te ofrece 3 archivos mágicos:</p>
+                <ul>
+                    <li><strong>README:</strong> Crea una descripción visual inmediata.</li>
+                    <li><strong>.gitignore:</strong> Elige la plantilla según tu lenguaje (Python, Node, etc).</li>
+                    <li><strong>License:</strong> ¡Fundamental! Sin licencia, nadie puede usar legalmente tu código.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-file-signature" style="font-size: 8rem; color: var(--success);"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: DESDE DESKTOP -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>GitHub Desktop</h4>
+                <h1>Publicar desde la App</h1>
+                <p>Si creaste el repo en tu PC primero:</p>
+                <ol>
+                    <li>Abre GitHub Desktop.</li>
+                    <li>Haz clic en el botón azul superior <strong>"Publish repository"</strong>.</li>
+                    <li><strong>Desmarca</strong> la casilla <em>"Keep this code private"</em> si quieres que sea público.</li>
+                </ol>
+            </div>
+            <div class="slide-visual">
+                <div class="mermaid">
+                    graph LR
+                    A[Repo Local] --> B(Publish Button)
+                    B --> C{Private checkbox}
+                    C -- Off --> D[Publicado!]
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 16: SEGURIDAD (MUY IMPORTANTE) -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Peligro</h4>
+                <h1>Secretos en Público</h1>
+                <div class="warning-box">
+                    <strong>¡ALERTA!:</strong> Nunca, bajo ninguna circunstancia, subas contraseñas, tokens de API o claves de base de datos a un repositorio público.
+                </div>
+                <p>Existen bots escaneando GitHub 24/7 para robar estas claves en segundos. Usa siempre archivos <code>.env</code> y regístralos en tu <code>.gitignore</code>.</p>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-user-shield" style="font-size: 8rem; color: #f85149;"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 17: SOCIAL FEATURES -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Interacción</h4>
+                <h1>Forks, Stars y Watch</h1>
+                <p>¿Cómo interactúa la gente con tu repo público?</p>
+                <ul>
+                    <li><strong>Stars:</strong> Como un "Like". Guarda tu proyecto en su lista de favoritos.</li>
+                    <li><strong>Watch:</strong> Notifica al usuario de cada cambio o discusión.</li>
+                    <li><strong>Fork:</strong> Crea una copia exacta de tu repo en la cuenta del otro usuario para que pueda editarlo libremente.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <div class="mermaid">
+                    graph TD
+                    User -- Star --> Repo
+                    User -- Fork --> Copia[Tu Código en su Perfil]
+                    User -- Watch --> Notificaciones
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 18: CAMBIAR VISIBILIDAD -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Ajustes</h4>
+                <h1>De Privado a Público</h1>
+                <p>¿Te arrepentiste? Puedes cambiarlo en cualquier momento:</p>
+                <ol>
+                    <li>Ve a la pestaña <strong>Settings</strong> de tu repo.</li>
+                    <li>Baja hasta el final: <strong>"Danger Zone"</strong>.</li>
+                    <li>Click en <strong>"Change visibility"</strong>.</li>
+                </ol>
+                <p><small>*Nota: Si pasas de público a privado, perderás las "Stars".</small></p>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-exclamation-triangle" style="font-size: 8rem; color: #e3b341;"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 19: COLABORACIÓN PÚBLICA -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Comunidad</h4>
+                <h1>Issues y Discussions</h1>
+                <p>Un repositorio público es un foro abierto:</p>
+                <ul>
+                    <li><strong>Issues:</strong> Cualquiera puede reportar un error o sugerir una mejora.</li>
+                    <li><strong>Pull Requests externos:</strong> Extraños pueden enviarte mejoras de código que tú decides si aceptar o no.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-users-cog" style="font-size: 8rem; opacity: 0.8;"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 20: CONCLUSIÓN -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Final</h4>
+                <h1>Tu Portfolio es GitHub</h1>
+                <p>Los reclutadores no miran tu CV, miran tus repositorios públicos. Mantener proyectos limpios, bien documentados y públicos es la mejor forma de demostrar que sabes programar.</p>
+                <p><strong>¡Sal ahí fuera y comparte tu código!</strong></p>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-rocket" style="font-size: 8rem; color: var(--primary);"></i>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+        <span id="slide-index">1 / 10</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progress-bar');
+        const slideIndexLabel = document.getElementById('slide-index');
+        const totalSlides = slides.length;
+
+        mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+
+        function updateUI() {
+            slides.forEach((slide, index) => { slide.classList.toggle('active', index === currentSlide); });
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
+            slideIndexLabel.innerText = `${currentSlide + 1} / ${totalSlides}`;
+            
+            setTimeout(() => {
+                const activeMermaid = document.querySelector(".slide.active .mermaid");
+                if (activeMermaid) mermaid.init(undefined, activeMermaid);
+            }, 100);
+        }
+
+        function changeSlide(step) {
+            currentSlide += step;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            if (currentSlide < 0) currentSlide = 0;
+            updateUI();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Enter') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        updateUI();
+    </script>
+</body>
+</html>
