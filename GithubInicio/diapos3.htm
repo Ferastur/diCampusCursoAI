@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Masterclass Parte 3 | Funciones Avanzadas</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2fdbf7; /* Color distintivo Parte 3 */
+            --success: #238636;
+            --bg: #0d1117;
+            --card-bg: rgba(22, 27, 34, 0.85);
+            --text: #e6edf3;
+            --text-dim: #8b949e;
+            --border: rgba(47, 219, 247, 0.2);
+            --glass: blur(15px);
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            background: radial-gradient(circle at top right, #0d2a35 0%, #0d1117 100%);
+            color: var(--text); font-family: 'Poppins', sans-serif;
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+        }
+
+        .progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 6px; background: rgba(255,255,255,0.05); z-index: 1000; }
+        #progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), #bc8cff); box-shadow: 0 0 15px var(--primary); transition: width 0.4s ease; }
+
+        .presentation-stage {
+            width: 90vw; height: 80vh; max-width: 1100px; max-height: 650px;
+            background: var(--card-bg); backdrop-filter: var(--glass);
+            border: 1px solid var(--border); border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); position: relative; display: flex; overflow: hidden;
+        }
+
+        .slide { display: none; width: 100%; height: 100%; padding: 50px; box-sizing: border-box; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; animation: slideReveal 0.6s ease-out; }
+        .slide.active { display: grid; }
+
+        @keyframes slideReveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .slide-info h4 { color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
+        .slide-info h1 { font-size: 2.8rem; margin: 10px 0 20px 0; line-height: 1.1; font-weight: 700; }
+        .slide-info p { font-size: 1.1rem; color: var(--text-dim); line-height: 1.6; }
+        
+        .slide-visual { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 20px; height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .mermaid { background: white !important; width: 100%; padding: 15px; border-radius: 12px; }
+
+        .controls { position: fixed; bottom: 40px; display: flex; gap: 20px; align-items: center; background: rgba(255,255,255,0.05); padding: 10px 25px; border-radius: 50px; border: 1px solid var(--border); }
+        .nav-btn { background: transparent; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; padding: 10px; transition: 0.3s; }
+        .nav-btn:hover:not(:disabled) { color: var(--primary); transform: scale(1.2); }
+        .nav-btn:disabled { opacity: 0.2; }
+
+        .code-block { background: #000; color: #58a6ff; padding: 15px; border-radius: 10px; font-family: monospace; font-size: 0.9rem; border: 1px solid #30363d; width: 100%; }
+        .highlight { color: var(--primary); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container"><div id="progress-bar"></div></div>
+
+    <div class="presentation-stage">
+        
+        <!-- SLIDE 21: INTRO PARTE 3 -->
+        <div class="slide active">
+            <div class="slide-info">
+                <h4>Parte 3</h4>
+                <h1>Más allá del Código</h1>
+                <p>En esta etapa final, aprenderás a usar GitHub como una herramienta de hosting, automatización y marca personal profesional. Es el nivel donde los desarrolladores destacan.</p>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-microchip" style="font-size: 8rem; color: var(--primary);"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 22: PROFILE README -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Marca Personal</h4>
+                <h1>Tu Perfil "Especial"</h1>
+                <p>¿Sabías que puedes personalizar tu página de perfil?</p>
+                <ul>
+                    <li>Crea un nuevo repositorio con el <strong>mismo nombre que tu usuario</strong> (ej: <code>mi-usuario/mi-usuario</code>).</li>
+                    <li>Añade un <code>README.md</code> a ese repo.</li>
+                    <li>¡Listo! Ese contenido aparecerá en la portada de tu perfil de GitHub.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-id-card" style="font-size: 8rem; opacity: 0.8;"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 23: GITHUB PAGES -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Hosting Gratis</h4>
+                <h1>GitHub Pages</h1>
+                <p>GitHub te regala hosting para tus webs estáticas (HTML, CSS, JS):</p>
+                <ol>
+                    <li>Sube tu web a un repo público.</li>
+                    <li>Ve a <strong>Settings -> Pages</strong>.</li>
+                    <li>Elige la rama <code>main</code> y guarda.</li>
+                    <li>Tu web estará online en: <code>usuario.github.io/repo</code></li>
+                </ol>
+            </div>
+            <div class="slide-visual">
+                <div class="mermaid">
+                    graph LR
+                    A[Repo HTML/CSS] --> B(Activar Pages)
+                    B --> C[Web Online Gratis]
+                    style C fill:#238636,color:#fff
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 24: GITHUB ACTIONS -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Automatización</h4>
+                <h1>GitHub Actions</h1>
+                <p>Es el sistema de CI/CD (Integración Continua) que permite ejecutar tareas automáticas:</p>
+                <ul>
+                    <li>Pasar tests automáticamente al hacer Push.</li>
+                    <li>Desplegar tu código a un servidor.</li>
+                    <li>Revisar si el código tiene errores de formato.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <div class="mermaid">
+                    graph TD
+                    A[Haces Push] --> B{Action}
+                    B -- Test OK --> C[Merge/Deploy]
+                    B -- Test Error --> D[Rechazar Cambio]
+                    style D fill:#f85149,color:#fff
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 25: CONTRIBUIR A OPEN SOURCE -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Comunidad</h4>
+                <h1>Cómo Contribuir</h1>
+                <p>Si quieres mejorar un proyecto ajeno:</p>
+                <ol>
+                    <li>Haz un <strong>Fork</strong> del proyecto.</li>
+                    <li>Crea una <strong>Branch</strong> en tu fork.</li>
+                    <li>Haz los cambios y súbelos.</li>
+                    <li>Envía un <strong>Pull Request</strong> al autor original.</li>
+                </ol>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-hands-helping" style="font-size: 8rem; color: var(--success);"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 26: GESTIÓN DE PROYECTOS -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Organización</h4>
+                <h1>GitHub Projects</h1>
+                <p>No necesitas Trello o Jira. GitHub incluye tableros Kanban:</p>
+                <ul>
+                    <li>Organiza tus <strong>Issues</strong> por columnas (To Do, In Progress, Done).</li>
+                    <li>Asigna tareas a colaboradores.</li>
+                    <li>Vincula los avances del tablero directamente con el código.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <div class="mermaid">
+                    kanban
+                    To_Do
+                      Tarea 1
+                      Tarea 2
+                    In_Progress
+                      Fix bug
+                    Done
+                      Login UI
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 27: RELEASES Y TAGS -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Versiones</h4>
+                <h1>Tags y Releases</h1>
+                <p>Cuando tu software llega a un punto estable, márcalo:</p>
+                <ul>
+                    <li><strong>Tags:</strong> Etiquetas como <code>v1.0.0</code> para congelar ese momento.</li>
+                    <li><strong>Releases:</strong> Permite adjuntar archivos descargables (ej: un .exe o .zip) para que los usuarios los descarguen fácilmente.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-tag" style="font-size: 8rem; opacity: 0.8;"></i>
+            </div>
+        </div>
+
+        <!-- SLIDE 28: MARKDOWN AVANZADO -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Documentación</h4>
+                <h1>Markdown Nivel Dios</h1>
+                <p>Haz que tus README resalten:</p>
+                <ul>
+                    <li>Usa <strong>Emojis</strong> para guiar la lectura.</li>
+                    <li>Crea <strong>Tablas</strong> para comparar datos.</li>
+                    <li>Añade <strong>Badges</strong> (escudos) para mostrar el estado del proyecto.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <div class="code-block">
+                    | Feature | Status | <br>
+                    | :--- | :--- | <br>
+                    | Auth | ✅ Done | <br>
+                    | API | 🚧 Wip |
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 29: GIT COMMAND LINE -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>El Siguiente Nivel</h4>
+                <h1>La Terminal</h1>
+                <p>Aunque uses Desktop, conocer los comandos básicos te da superpoderes:</p>
+                <ul>
+                    <li><code>git status</code>: Mira qué pasa.</li>
+                    <li><code>git log</code>: Mira el pasado.</li>
+                    <li><code>git checkout -b rama</code>: Crea una rama al instante.</li>
+                </ul>
+            </div>
+            <div class="slide-visual">
+                <div class="code-block">
+                    $ git add . <br>
+                    $ git commit -m "feat: core" <br>
+                    <span class="highlight">$ git push origin main</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 30: EL VIAJE COMIENZA -->
+        <div class="slide">
+            <div class="slide-info">
+                <h4>Fin de la Masterclass</h4>
+                <h1>El Código es tu Límite</h1>
+                <p>Has pasado de no saber qué es un repositorio a entender la automatización y el hosting. El camino de un desarrollador nunca termina.</p>
+                <p><strong>Recuerda:</strong> La mejor forma de aprender GitHub es rompiendo cosas y volviéndolas a unir.</p>
+            </div>
+            <div class="slide-visual">
+                <i class="fas fa-flag-checkered" style="font-size: 8rem; color: var(--primary);"></i>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+        <span id="slide-index">1 / 10</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progress-bar');
+        const slideIndexLabel = document.getElementById('slide-index');
+        const totalSlides = slides.length;
+
+        mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' });
+
+        function updateUI() {
+            slides.forEach((slide, index) => { slide.classList.toggle('active', index === currentSlide); });
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
+            slideIndexLabel.innerText = `${currentSlide + 1} / ${totalSlides}`;
+            
+            setTimeout(() => {
+                const activeMermaid = document.querySelector(".slide.active .mermaid");
+                if (activeMermaid) mermaid.init(undefined, activeMermaid);
+            }, 100);
+        }
+
+        function changeSlide(step) {
+            currentSlide += step;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            if (currentSlide < 0) currentSlide = 0;
+            updateUI();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Enter') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        updateUI();
+    </script>
+</body>
+</html>
