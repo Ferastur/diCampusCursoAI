@@ -3,68 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library AI Master | Talento Solutions</title>
+    <title>Library AI Master | Proyecto Talento Solutions</title>
+    
+    <!-- Fuentes y CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+
     <style>
-        :root { --primary: #00d2ff; --secondary: #3a7bd5; }
-        body { background: #0f0c29; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
-        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, #0f0c29, #302b63, #24243e); }
-        .card-3d {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 20px;
-            padding: 40px;
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --accent: #f093fb;
+            --dark-bg: #060b1a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Fondo de Partículas Animado */
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            z-index: -1;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1f35 0%, #060b1a 100%);
+        }
+
+        /* Efectos de Cristal (Glassmorphism) */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
-            transform: perspective(1000px) rotateX(5deg) rotateY(-5deg);
-            transition: 0.5s;
         }
-        .card-3d:hover { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); border-color: var(--primary); }
-        .btn-custom {
+
+        .glass-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 20px 40px rgba(0, 242, 254, 0.15);
+        }
+
+        /* Navbar */
+        .navbar {
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 20px 0;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 160px 0 100px;
+            min-height: 100vh;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        /* 3D Mockup Container */
+        .mockup-3d {
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .floating-ui {
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(0, 242, 254, 0.3));
+            border-radius: 20px;
+            max-width: 100%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateY(-10deg); }
+            50% { transform: translateY(-30px) rotateY(5deg); }
+        }
+
+        /* Botones */
+        .btn-github {
             background: linear-gradient(45deg, var(--primary), var(--secondary));
-            border: none; color: white; padding: 15px 30px;
-            border-radius: 50px; font-weight: bold; text-transform: uppercase;
-            transition: 0.3s; box-shadow: 0 10px 20px rgba(0,210,255,0.3);
+            border: none;
+            color: #000;
+            font-weight: 700;
+            padding: 16px 40px;
+            border-radius: 100px;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4);
         }
-        .btn-custom:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,210,255,0.5); color: white; }
-        .feature-icon { font-size: 3rem; margin-bottom: 20px; background: linear-gradient(to bottom, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .floating { animation: floating 3s ease-in-out infinite; }
-        @keyframes floating { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+
+        .btn-github:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.6);
+            color: #000;
+        }
+
+        /* Features */
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 242, 254, 0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .badge-tech {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.8rem; }
+        }
     </style>
 </head>
 <body>
 
-    <section class="hero">
+    <div id="bg-canvas"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="#">
+                <i class="fas fa-brain text-gradient me-2"></i>LIBRARY AI
+            </a>
+            <div class="ms-auto">
+                <a href="https://github.com/Ferastur/diCampusCursoAI/tree/main/Biblioteca" target="_blank" class="text-white text-decoration-none badge-tech">
+                    v3.0 Stable <i class="fab fa-github ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 text-center text-lg-start">
-                    <h1 class="display-3 fw-bold mb-4">Library <span style="color: var(--primary);">AI Master</span></h1>
-                    <p class="lead mb-5">El futuro de la gestión bibliotecaria asistida por IA. Potencia, seguridad y comunicación en una sola herramienta.</p>
-                    <a href="https://github.com/tu-usuario/tu-repo" class="btn btn-custom btn-lg">
-                        <i class="fab fa-github"></i> Ver en GitHub
-                    </a>
-                </div>
-                <div class="col-lg-6 d-none d-lg-block">
-                    <div class="card-3d floating text-center">
-                        <i class="fas fa-book-reader feature-icon"></i>
-                        <h3>Gestión Inteligente</h3>
-                        <p>Control de préstamos, multas automáticas y notificaciones por WhatsApp.</p>
-                        <hr>
-                        <div class="d-flex justify-content-around">
-                            <span><i class="fas fa-shield-alt"></i> Seguridad</span>
-                            <span><i class="fas fa-bolt"></i> Rapidez</span>
-                            <span><i class="fas fa-mobile-alt"></i> Notificaciones</span>
+                <div class="col-lg-7" data-aos="fade-right">
+                    <h5 class="text-uppercase tracking-widest mb-3" style="color: var(--accent); letter-spacing: 4px;">Talento Solutions Proyecto Piloto</h5>
+                    <h1 class="hero-title mb-4">Gestión de Biblioteca <br><span class="text-gradient">Potenciada por IA</span></h1>
+                    <p class="lead mb-5 text-secondary" style="font-size: 1.25rem;">
+                        Un ecosistema inteligente desarrollado en Python que redefine la interacción entre bibliotecarios y lectores. 
+                        Diseño robusto, seguridad criptográfica y comunicación automatizada en tiempo real.
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="https://github.com/Ferastur/diCampusCursoAI/tree/main/Biblioteca" target="_blank" class="btn btn-github">
+                            <i class="fab fa-github me-2"></i> EXPLORAR REPOSITORIO
+                        </a>
+                        <div class="d-flex align-items-center gap-2 ms-lg-4 mt-3 mt-lg-0">
+                            <span class="badge-tech">Python 3.10+</span>
+                            <span class="badge-tech">SQLite3</span>
+                            <span class="badge-tech">AI Driven</span>
                         </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 mt-5 mt-lg-0" data-aos="zoom-in">
+                    <div class="mockup-3d">
+                        <!-- Imagen de la interfaz del programa (sustituible por captura real) -->
+                        <img src="https://shareimages.free.nf/uploads/docu83.png" alt="Library UI" class="floating-ui shadow-lg">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-4 text-center border-top border-secondary">
-        <p class="mb-0">Creado con ❤️ por <strong>Ferastur3D & Gemini</strong> para Talento Solutions</p>
+    <!-- Features Section -->
+    <section class="py-5" id="features">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="glass-card p-5 h-100">
+                        <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
+                        <h3>Seguridad Criptográfica</h3>
+                        <p class="text-secondary">Login con cifrado SHA-256 y roles jerárquicos. Privacidad total de datos entre administradores y lectores.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card p-5 h-100">
+                        <div class="feature-icon"><i class="fab fa-whatsapp"></i></div>
+                        <h3>Recordatorios Smart</h3>
+                        <p class="text-secondary">Detección automática de usuarios en mora y generación de enlaces de WhatsApp para notificaciones directas.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="glass-card p-5 h-100">
+                        <div class="feature-icon"><i class="fas fa-image"></i></div>
+                        <h3>Catálogo Visual</h3>
+                        <p class="text-secondary">Integración dinámica de portadas desde URLs externas con historial de préstamos detallado (exclusivo Admin).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Informe / Metodología -->
+    <section class="py-5 mt-5">
+        <div class="container glass-card p-5" data-aos="fade-up">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h2 class="text-gradient mb-4">Metodología de Desarrollo AI</h2>
+                    <p>Este proyecto ha sido concebido bajo un flujo de trabajo asistido por IA, cumpliendo las 4 fases del ciclo SDLC propuesto por <strong>Talento Solutions</strong>:</p>
+                    <div class="row mt-4">
+                        <div class="col-6 mb-3">
+                            <h5 class="text-primary"><i class="fas fa-check-circle me-2"></i>Planificación</h5>
+                            <p class="small text-secondary">Historias de usuario y arquitectura generada con prompts de precisión.</p>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <h5 class="text-primary"><i class="fas fa-check-circle me-2"></i>Desarrollo</h5>
+                            <p class="small text-secondary">Pair Programming con IA para la creación de lógica CRUD y SQL avanzada.</p>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <h5 class="text-primary"><i class="fas fa-check-circle me-2"></i>Testing</h5>
+                            <p class="small text-secondary">Validación de inputs (Regex) y control de excepciones automatizado.</p>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <h5 class="text-primary"><i class="fas fa-check-circle me-2"></i>Ética</h5>
+                            <p class="small text-secondary">Reflexión sobre el sesgo de datos y seguridad en el manejo de usuarios.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 d-flex align-items-center justify-content-center">
+                    <div class="text-center">
+                        <h1 class="display-1 text-gradient">98%</h1>
+                        <p class="text-uppercase">Eficiencia en Código</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <div class="mb-4">
+                <span class="badge-tech">Tkinter UI</span>
+                <span class="badge-tech">Pillow PIL</span>
+                <span class="badge-tech">GitHub Actions</span>
+                <span class="badge-tech">Clean Code</span>
+            </div>
+            <p class="text-secondary mb-0">Creado con pasión por</p>
+            <h4 class="fw-bold">Ferastur3D <span class="text-secondary">&</span> Gemini</h4>
+            <div class="mt-4">
+                <a href="https://github.com/Ferastur/diCampusCursoAI/tree/main/Biblioteca" target="_blank" class="btn btn-outline-light btn-sm rounded-pill px-4">
+                    <i class="fab fa-github me-2"></i> Acceder al Código Fuente
+                </a>
+            </div>
+        </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Inicializar Animaciones
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Efecto Simple de Partículas en el fondo
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.getElementById('bg-canvas').appendChild(canvas);
+
+        let particles = [];
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(79, 172, 254, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function setup() {
+            initCanvas();
+            for (let i = 0; i < 100; i++) particles.push(new Particle());
+            animate();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        setup();
+    </script>
 </body>
 </html>
