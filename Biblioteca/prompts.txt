@@ -1,0 +1,22 @@
+🧠 Registro de Prompts: Desarrollo "Library AI Master"
+1. Definición Inicial y Estructura
+"Quiero que me crees el python completo primero con todas las clases bien definidas para los libros, préstamos, etc. Dame el código completo, no es una prueba, es producción final, nada de ejemplos o demos, todo funcional!!"
+2. Requisitos de Seguridad y Base de Datos
+"Plantea bien las bases de datos y las tablas para que tengan los campos necesarios para que esta aplicación sea útil y tenga todo el CRUD para manejar las tablas y un sistema de registro y login de usuarios, con gran seguridad en la clave (se guarda con hash)."
+3. Interfaz de Usuario y Navegación (Tabs)
+"En la ficha de cada tabla hay que mirar los históricos (tablas hijas) que tiene para mostrar por solapas el contenido de esas tablas relacionadas. Cada una tendrá el nombre de la tabla y badge y debajo se verá al pulsar en esa solapa la lista de registros correspondientes. En todas las listas vas a ponerle el título de la tabla centrado y un botón arriba a la izquierda para crear un nuevo registro y a la derecha un botón para buscar un registro. Además todos los registros tendrán un botón para editar o borrar ese registro."
+4. Reglas de Negocio y Penalizaciones
+"El sistema permitirá prestar libros. En la configuración (solo admin) se seleccionará el número de días máximo de devolución y el máximo de libros por usuario. La tabla de préstamos enlazará usuarios y libros. Si un usuario devuelve el libro después de plazo, se le penalizará durante 7 días sin poder pedir libros prestados."
+5. Evolución: Fichas con Imágenes y URLs
+"Mejora el python: haz una ventana de ficha de libro donde se pueda poner la imagen del libro mediante una URL a la portada. En esa ficha, el admin podrá ver los últimos usuarios que han alquilado ese libro y en qué fechas (ordenado por más recientes)."
+6. Sistema de Notificaciones Automáticas (Mora)
+"En el menú general el admin tendrá un botón para buscar libros fuera de plazo y preparará un mensaje para enviar por email y/o WhatsApp. El mensaje dirá: 'Estimado <nombre>, tiene los siguientes libros pendientes de devolver: <lista_libros>'. Para WhatsApp usa la URL: https://wa.me/XXXXXX?text=MENSAJE donde XXXXXX es el teléfono (pedir al registrarse)."
+7. Validaciones de Registro Profesionales
+"Modifica el registro para que incluya todos los campos necesarios. Debe validar que el email sea correcto y que la clave tenga al menos 6 caracteres. Dame el código mejorado con mejor presentación y opciones para buscar o editar."
+8. Restricciones de Rol y Privacidad (Lógica Final)
+"Restricciones finales:
+Los libros solo los añade el admin.
+En la ficha del libro, si no es admin, no ve el historial de préstamos.
+Los usuarios normales solo ven en la lista los libros disponibles (no alquilados).
+Solo el admin registra devoluciones y edita libros.
+El usuario solo ve sus préstamos actuales, la fecha de devolución y una alerta si se ha pasado de fecha."
